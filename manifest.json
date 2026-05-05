@@ -1,7 +1,7 @@
 {
   "id": "expand-insert-tag",
   "name": "Expand Insert Tag",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "minAppVersion": "0.15.0",
   "description": "Expands &[[Note#Heading]] tags at the cursor into the raw section content.",
   "author": "Roger",
