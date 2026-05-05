@@ -7,7 +7,10 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
       name: "Expand Insert Tag at Cursor",
       editorCallback: async (editor) => {
         const cursor = editor.getCursor();
-        const lineText = editor.getLine(cursor.line);
+        const activeFile = this.app.workspace.getActiveFile();
+        if (!activeFile) return;
+        const rawContent = await this.app.vault.read(activeFile);
+        const lineText = rawContent.split("\n")[cursor.line];
 
         // Match &[[Note#Heading]] — note name may contain spaces, heading is required
         const match = lineText.match(/^&\[\[([^\]#]+)#+([^\]]+)\]\]/);
@@ -21,7 +24,7 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
         const errorTag = `<!-- ${fullMatch} — not found -->`;
 
         // Find the note file in the vault
-        const file = this.app.metadataCache.getFirstLinkpathDest(noteName, this.app.workspace.getActiveFile()?.path ?? "");
+        const file = this.app.metadataCache.getFirstLinkpathDest(noteName, activeFile.path);
 
         if (!file) {
           editor.setLine(cursor.line, errorTag);
