@@ -18,10 +18,10 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
         }
 
         const [fullMatch, noteName, headingText] = match;
-        const errorTag = `<!-- &[[${noteName}#${headingText}]] — not found -->`;
+        const errorTag = `<!-- ${fullMatch} — not found -->`;
 
         // Find the note file in the vault
-        const file = this.app.metadataCache.getFirstLinkpathDest(noteName, "");
+        const file = this.app.metadataCache.getFirstLinkpathDest(noteName, this.app.workspace.getActiveFile()?.path ?? "");
 
         if (!file) {
           editor.setLine(cursor.line, errorTag);
