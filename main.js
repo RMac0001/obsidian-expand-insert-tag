@@ -71,6 +71,16 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
       },
     });
 
+    this.addCommand({
+      id: "expand-insert-tag-debug",
+      name: "Debug: Show Raw Line Text",
+      editorCallback: (editor) => {
+        const line = editor.getCursor().line;
+        const text = editor.getLine(line);
+        new Notice(`Line ${line}: "${text}"`, 10000);
+      },
+    });
+
     // Intercept Enter in capture phase so we fire before CodeMirror processes it.
     // If the current line matches the tag, expand it and suppress the newline.
     this.registerDomEvent(document, "keydown", async (evt) => {
