@@ -9,16 +9,16 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
         const cursor = editor.getCursor();
         const lineText = editor.getLine(cursor.line);
 
-        // Match >[[Note#Heading]] — note name may contain spaces, heading is required
-        const match = lineText.match(/^>\[\[([^\]#]+)#([^\]]+)\]\]/);
+        // Match &[[Note#Heading]] — note name may contain spaces, heading is required
+        const match = lineText.match(/^&\[\[([^\]#]+)#+([^\]]+)\]\]/);
 
         if (!match) {
-          new Notice("No >[[Note#Heading]] tag found on this line.");
+          new Notice("No &[[Note#Heading]] tag found on this line.");
           return;
         }
 
         const [fullMatch, noteName, headingText] = match;
-        const errorTag = `<!-- >[[${noteName}#${headingText}]] — not found -->`;
+        const errorTag = `<!-- &[[${noteName}#${headingText}]] — not found -->`;
 
         // Find the note file in the vault
         const file = this.app.metadataCache.getFirstLinkpathDest(noteName, "");
