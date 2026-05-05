@@ -9,8 +9,7 @@ module.exports = class ExpandInsertTagPlugin extends Plugin {
         const cursor = editor.getCursor();
         const activeFile = this.app.workspace.getActiveFile();
         if (!activeFile) return;
-        const rawContent = await this.app.vault.read(activeFile);
-        const lineText = rawContent.split("\n")[cursor.line];
+        const lineText = editor.getLine(cursor.line);
 
         // Match &[[Note#Heading]] — note name may contain spaces, heading is required
         const match = lineText.match(/^&\[\[([^\]#]+)#+([^\]]+)\]\]/);
